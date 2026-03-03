@@ -437,9 +437,7 @@
             </div>
             <p class="memory-text" id="memory-txt">Memory text here</p>
         </div>
-        <button class="next-btn" id="next-balloon-btn" onclick="nextBalloon()">yaha click karna h 
-            
-        </button>
+        <button class="next-btn" id="next-balloon-btn" onclick="nextBalloon()">yaha click karna h</button>
     </div>
 
     <!-- SCREEN 4: Moving Carousels -->
@@ -458,33 +456,30 @@
 
     <script>
         // --- DATA SETUP ---
-        // Edit this array to add your actual media files and memories!
-        // Place files in public/img or src/img depending on your build setup. 
-        // Example: src="img/photo1.jpg"
         const memories = [
-            { type: 'image', src: 'img/WhatsApp%20Image%202026-03-03%20at%2010.27.27%20AM.jpeg', text: 'apke haath bechare boht dard hota tha na mere wajh se kitni baar lag gya h inpe ' },
-            { type: 'image', src: 'img/after%20a%20long%20tim%20e.jpeg', text: ' shakal ajeeb ayi h meri par tu kitni pyari lag rhi h isme ' },
-            { type: 'image', src: 'img/apka%20clatcher.jpeg', text: 'aap nhi toh apka clutcher hi sath h vaise clutcher aur m sath m ache lag rhe h ' },
-            { type: 'image', src: 'img/apke%20baal%20.jpeg', text: 'Maine maine banaya h dekh kitna acha banaya tha ' },
-            { type: 'video', src: 'img/apke%20clipbaal.mp4', text: 'aise hi boht sundar lag rhi h tu... Hayee nazar naa lage ' },
-            { type: 'image', src: 'img/beautiful%20.jpeg', text: 'Dekha jaye toh saloni isme bhi natural beauty toh dikh rhi h teri nazara kitna acha h na ... par tu tab mujhse ab jaise baat nhi karti thi varna sath m enjoy karte ' },
-            { type: 'image', src: 'img/beautifull%20pro%20max.jpeg', text: 'Haa yaha p toh hum baat karne lage the , Glow up bhi hogya aur sundar sundar sundar hone lagi ' },
-            { type: 'image', src: 'img/black%20back%20saree.jpeg', text: 'Black sareee m oye hoye hoye sabne dekh liya tha 12th m mera number hi last aaya ' },
-            { type: 'video', src: 'img/computer%20class.mp4', text: 'ispe m kya kahu 😂😂🤣 memories h ' },
-            { type: 'image', src: 'img/gemini%20art.jpeg', text: 'ye ye dono kon h ache lag rhe h sath m ' },
+            { type: 'image', src: 'img/WhatsApp Image 2026-03-03 at 10.27.27 AM.jpeg', text: 'apke haath bechare boht dard hota tha na mere wajh se kitni baar lag gya h inpe ' },
+            { type: 'image', src: 'img/after a long tim e.jpeg', text: ' shakal ajeeb ayi h meri par tu kitni pyari lag rhi h isme ' },
+            { type: 'image', src: 'img/apka clatcher.jpeg', text: 'aap nhi toh apka clutcher hi sath h vaise clutcher aur m sath m ache lag rhe h ' },
+            { type: 'image', src: 'img/apke baal .jpeg', text: 'Maine maine banaya h dekh kitna acha banaya tha ' },
+            { type: 'video', src: 'img/apke clipbaal.mp4', text: 'aise hi boht sundar lag rhi h tu... Hayee nazar naa lage ' },
+            { type: 'image', src: 'img/beautiful .jpeg', text: 'Dekha jaye toh saloni isme bhi natural beauty toh dikh rhi h teri nazara kitna acha h na ... par tu tab mujhse ab jaise baat nhi karti thi varna sath m enjoy karte ' },
+            { type: 'image', src: 'img/beautifull pro max.jpeg', text: 'Haa yaha p toh hum baat karne lage the , Glow up bhi hogya aur sundar sundar sundar hone lagi ' },
+            { type: 'image', src: 'img/black back saree.jpeg', text: 'Black sareee m oye hoye hoye sabne dekh liya tha 12th m mera number hi last aaya ' },
+            { type: 'video', src: 'img/computer class.mp4', text: 'ispe m kya kahu 😂😂🤣 memories h ' },
+            { type: 'image', src: 'img/gemini art.jpeg', text: 'ye ye dono kon h ache lag rhe h sath m ' },
             { type: 'image', src: 'img/haircut.jpeg', text: 'Nice haircut' },
-            { type: 'image', src: 'img/hands%20in%20train%20.jpeg', text: 'Aise hath nhi pakdte saloni koi dekh lega 😏' },
-            { type: 'image', src: 'img/hands%20while%20walking.jpeg', text: 'aise hath pakd k chal na chahiye isse body m positivity aati h tere gaon jane k ek din pehle liya tha maine ' },
-            { type: 'image', src: 'img/happy%2018th%20birthday.jpeg', text: 'Happy birthday to youuu 18th completed saloni... surprise kasia laga' },
-            { type: 'image', src: 'img/iskcon%20spider%20img.jpeg', text: 'ye ye dono kon h ye bhi ache lag rhe h sath m ' },
-            { type: 'video', src: 'img/masoom%20.mp4', text: 'Masoom si surat h teri chehre p halki si smile tujhe acha bhale naa lage ye par par ye rahega in my mobile' },
-            { type: 'image', src: 'img/officialy%20first%20pic.jpeg', text: 'Dekha jaye to ye humara pehla photot tha sath m... pose acha h waise' },
-            { type: 'video', src: 'img/phelix%20.mp4', text: 'phelix vibesss' },
-            { type: 'video', src: 'img/pizza%20adayein.mp4', text: 'Vlogger saloni , ' },
-            { type: 'video', src: 'img/pizza%20day.mp4', text: 'SHH sirf video dekho ' },
-            { type: 'image', src: 'img/saree%20in%20traditional%20.jpeg', text: 'First time saree m dekha tha maine tujjhe kitni sundarrrrrr lag rhi h tu , aur tujhe lagta h mujhe tareef karna nhi aata ' },
-            { type: 'image', src: 'img/traditional%20day%20.jpeg', text: 'humari photo aur upr se mam ka dekhna 😂' },
-            { type: 'image', src: 'img/uff%20pro%20max.jpeg', text: 'aye haye haye nazar naa lage ' },
+            { type: 'image', src: 'img/hands in train .jpeg', text: 'Aise hath nhi pakdte saloni koi dekh lega 😏' },
+            { type: 'image', src: 'img/hands while walking.jpeg', text: 'aise hath pakd k chal na chahiye isse body m positivity aati h tere gaon jane k ek din pehle liya tha maine ' },
+            { type: 'image', src: 'img/happy 18th birthday.jpeg', text: 'Happy birthday to youuu 18th completed saloni... surprise kasia laga' },
+            { type: 'image', src: 'img/iskcon spider img.jpeg', text: 'ye ye dono kon h ye bhi ache lag rhe h sath m ' },
+            { type: 'video', src: 'img/masoom .mp4', text: 'Masoom si surat h teri chehre p halki si smile tujhe acha bhale naa lage ye par par ye rahega in my mobile' },
+            { type: 'image', src: 'img/officialy first pic.jpeg', text: 'Dekha jaye to ye humara pehla photot tha sath m... pose acha h waise' },
+            { type: 'video', src: 'img/phelix .mp4', text: 'phelix vibesss' },
+            { type: 'video', src: 'img/pizza adayein.mp4', text: 'Vlogger saloni , ' },
+            { type: 'video', src: 'img/pizza day.mp4', text: 'SHH sirf video dekho ' },
+            { type: 'image', src: 'img/saree in traditional .jpeg', text: 'First time saree m dekha tha maine tujjhe kitni sundarrrrrr lag rhi h tu , aur tujhe lagta h mujhe tareef karna nhi aata ' },
+            { type: 'image', src: 'img/traditional day .jpeg', text: 'humari photo aur upr se mam ka dekhna 😂' },
+            { type: 'image', src: 'img/uff pro max.jpeg', text: 'aye haye haye nazar naa lage ' },
             { type: 'image', src: 'img/uff.jpeg', text: 'Dekha jabse tumko bss dekha tumko yaara , tumse na koi acha h na tumse koi pyara ' },
             { type: 'image', src: 'img/waoh.jpeg', text: 'Aise poses 😂 ' }
         ];
@@ -497,12 +492,9 @@
         // --- PHASE 1: Intro Logic ---
         window.onload = () => {
             createMovingBokeh();
-            // Black screen for 1 second, then teddy sneaks up
             setTimeout(() => {
                 const teddy = document.getElementById('teddy-wrapper');
                 teddy.classList.add('sneak');
-                
-                // Show speech bubble after teddy comes up
                 setTimeout(() => {
                     document.getElementById('speech').classList.add('show');
                 }, 800);
@@ -524,29 +516,19 @@
             }
         }
 
-        // --- PHASE 2: Balloons ---
         function startBalloonPhase() {
-            // Teddy sneaks back down
             document.getElementById('teddy-wrapper').classList.remove('sneak');
             document.getElementById('speech').classList.remove('show');
-
             setTimeout(() => {
                 document.getElementById('intro-screen').classList.remove('active');
                 document.getElementById('intro-screen').classList.add('hidden');
-                
                 const bs = document.getElementById('balloon-screen');
                 bs.classList.remove('hidden');
                 bs.classList.add('active');
-
-                // Start Petals
                 startPetals();
-
-                // Fade in Title
                 setTimeout(() => {
                     document.getElementById('balloon-title').style.opacity = '1';
                 }, 500);
-
-                // Release first balloon
                 setTimeout(releaseBalloon, 1500);
             }, 800);
         }
@@ -566,61 +548,42 @@
         function createPetalEffect() {
             const petal = document.createElement('div');
             petal.classList.add('petal');
-            
             const startX = Math.random() * window.innerWidth;
             const drift = (Math.random() - 0.5) * 200;
             const duration = Math.random() * 5 + 5;
-            
             petal.style.left = startX + 'px';
             petal.style.setProperty('--drift', drift + 'px');
             petal.style.animation = `petalFall ${duration}s linear forwards`;
-            
             document.body.appendChild(petal);
-            
-            setTimeout(() => {
-                petal.remove();
-            }, duration * 1000);
+            setTimeout(() => petal.remove(), duration * 1000);
         }
 
         function releaseBalloon() {
             if (availableMemories.length === 0) {
-                // All popped! Move to next phase automatically
                 startCarouselPhase();
                 return;
             }
-
-            // Create balloon element
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
             balloon.innerText = '🎈';
-            
-            // Randomize speed between 4s and 7s
             const speed = Math.random() * 3 + 4;
             balloon.style.animation = `floatUp ${speed}s linear forwards`;
-            
-            // Randomize X position slightly so they don't always pop up center
-            const randomX = (Math.random() - 0.5) * 50; // -25vw to 25vw
+            const randomX = (Math.random() - 0.5) * 50;
             balloon.style.left = `calc(50% + ${randomX}vw)`;
-
-            // Click event to pop
             balloon.onclick = (e) => {
                 const flash = document.getElementById('flash');
                 flash.classList.add('flash-active');
                 setTimeout(() => flash.classList.remove('flash-active'), 300);
-                
                 createHeartBurst(e.clientX, e.clientY);
                 balloon.remove();
                 showMemory();
             };
-
             document.getElementById('balloon-screen').appendChild(balloon);
             currentBalloon = balloon;
-
-            // Optional: If balloon escapes screen without click, send another
             setTimeout(() => {
                 if (document.body.contains(balloon)) {
                     balloon.remove();
-                    releaseBalloon(); // Send another one
+                    releaseBalloon();
                 }
             }, speed * 1000);
         }
@@ -641,20 +604,13 @@
 
         function showMemory() {
             poppedCount++;
-            
-            // Determine if we should show skip button
             if (poppedCount >= 3) {
                 document.getElementById('skip-wrapper').classList.remove('hidden');
             }
-
-            // Pick random memory
             const randomIndex = Math.floor(Math.random() * availableMemories.length);
             const memory = availableMemories.splice(randomIndex, 1)[0];
-
-            // Setup Photo Card
             const mediaBox = document.getElementById('media-box');
-            mediaBox.innerHTML = ''; // Clear prev
-
+            mediaBox.innerHTML = '';
             if (memory.type === 'image') {
                 const img = document.createElement('img');
                 img.src = memory.src;
@@ -664,87 +620,56 @@
                 vid.src = memory.src;
                 vid.autoplay = true;
                 vid.loop = true;
-                vid.muted = false; // Enabled sound after user interaction
+                vid.muted = false;
                 vid.playsInline = true;
                 mediaBox.appendChild(vid);
             }
-
             document.getElementById('memory-txt').innerText = memory.text;
-
-            // Switch screens
             document.getElementById('balloon-screen').classList.remove('active');
             document.getElementById('balloon-screen').classList.add('hidden');
-            
             const ps = document.getElementById('photo-screen');
             ps.classList.remove('hidden');
             ps.classList.add('active');
-
-            // Animate card in
             setTimeout(() => {
                 document.getElementById('photo-card').classList.add('show');
             }, 100);
         }
 
         function nextBalloon() {
-            // Hide Photo Screen
             document.getElementById('photo-card').classList.remove('show');
-            
             setTimeout(() => {
                 document.getElementById('photo-screen').classList.remove('active');
                 document.getElementById('photo-screen').classList.add('hidden');
-                
                 const bs = document.getElementById('balloon-screen');
                 bs.classList.remove('hidden');
                 bs.classList.add('active');
-                
-                // Release next balloon
                 releaseBalloon();
             }, 500);
         }
 
-        // --- PHASE 3: Carousel ---
         function startCarouselPhase() {
-            // Stop Petals for the carousel section
             stopPetals();
-
-            // Hide everything else
             document.getElementById('balloon-screen').classList.remove('active');
             document.getElementById('balloon-screen').classList.add('hidden');
             document.getElementById('photo-screen').classList.remove('active');
             document.getElementById('photo-screen').classList.add('hidden');
-
             const cs = document.getElementById('carousel-screen');
             cs.classList.remove('hidden');
             cs.classList.add('active');
-
             buildCarousels();
         }
 
         function buildCarousels() {
             const track1 = document.getElementById('track1');
             const track2 = document.getElementById('track2');
-            
             track1.innerHTML = '';
             track2.innerHTML = '';
-
-            // We need enough items to make a continuous marquee.
-            // Let's duplicate the original 'memories' array a few times.
             const repeatedMemories = [...memories, ...memories, ...memories, ...memories];
-            
-            // Split into two halves for row 1 and row 2
             const half = Math.ceil(repeatedMemories.length / 2);
             const row1Data = repeatedMemories.slice(0, half);
             const row2Data = repeatedMemories.slice(half);
-
-            // Populate Track 1
-            row1Data.forEach(m => {
-                track1.appendChild(createMediaElement(m));
-            });
-
-            // Populate Track 2
-            row2Data.forEach(m => {
-                track2.appendChild(createMediaElement(m));
-            });
+            row1Data.forEach(m => track1.appendChild(createMediaElement(m)));
+            row2Data.forEach(m => track2.appendChild(createMediaElement(m)));
         }
 
         function createMediaElement(memory) {
