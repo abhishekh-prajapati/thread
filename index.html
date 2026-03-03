@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For you</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b81;
+            --dark: #000000;
+            --text-light: #ffffff;
+            --accent: #ff4757;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #1a0a10 0%, #000000 100%);
+        }
+
+        /* Bokeh Background Effect */
+        .bokeh-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bokeh {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,107,129,0.2) 0%, rgba(255,107,129,0) 70%);
+            filter: blur(20px);
+            animation: moveBokeh 20s infinite alternate;
+        }
+
+        @keyframes moveBokeh {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+            z-index: 10;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- Intro Screen --- */
+        #teddy-wrapper {
+            position: absolute;
+            bottom: -300px; /* Hidden below */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: bottom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
+        }
+
+        #teddy-wrapper.sneak {
+            bottom: 20px;
+        }
+
+        .teddy-icon {
+            width: 200px;
+            height: auto;
+            max-width: 80vw;
+            filter: drop-shadow(0 10px 15px rgba(255, 71, 87, 0.3));
+        }
+
+        .speech-bubble {
+            background: white;
+            color: var(--dark);
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease;
+        }
+
+        .speech-bubble.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0 10px;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+
+        .ok-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 35px;
+            border-radius: 25px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 71, 87, 0.6); transform: scale(1); }
+            50% { box-shadow: 0 0 20px rgba(255, 71, 87, 0.8); transform: scale(1.05); }
+            100% { box-shadow: 0 0 5px rgba(255, 71, 87, 0.6); transform: scale(1); }
+        }
+
+        /* --- Balloon Screen --- */
+        #balloon-title {
+            position: absolute;
+            top: 20%;
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(255, 107, 129, 0.5);
+            opacity: 0;
+            transition: opacity 1s ease;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .balloon {
+            font-size: 6rem;
+            position: absolute;
+            bottom: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            filter: drop-shadow(0 5px 15px rgba(255,255,255,0.2));
+            z-index: 30;
+            transition: transform 0.1s;
+        }
+        
+        .balloon:active {
+            transform: translateX(-50%) scale(0.9);
+        }
+
+        @keyframes floatUp {
+            0% { bottom: -150px; transform: translateX(-50%) rotate(-5deg); }
+            50% { transform: translateX(-50%) rotate(5deg); }
+            100% { bottom: 120vh; transform: translateX(-50%) rotate(-5deg); }
+        }
+
+        .skip-wrapper {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            z-index: 50;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid white;
+            backdrop-filter: blur(5px);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- Photo Memory Screen --- */
+        .photo-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 12px;
+            padding-bottom: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 90%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-card.show {
+            transform: scale(1) rotate(-2deg);
+            opacity: 1;
+        }
+
+        .media-box {
+            width: 100%;
+            max-height: 50vh;
+            border: 2px solid #eee;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f8f8f8;
+        }
+
+        .media-box img, .media-box video {
+            max-width: 100%;
+            max-height: 50vh;
+            object-fit: contain;
+        }
+
+        .memory-text {
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            margin-top: 18px;
+            padding: 0 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .next-btn {
+            margin-top: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.4);
+        }
+
+        /* --- Final Carousel Screen --- */
+        #carousel-screen {
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: space-evenly;
+            padding: 20px 0;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 40vh;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 15px;
+            padding: 0 15px;
+            width: max-content;
+        }
+
+        .marquee-track img, .marquee-track video {
+            height: 35vh;
+            width: auto;
+            max-width: 80vw;
+            border: none;
+            border-radius: 5px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(255,255,255,0.05);
+        }
+
+        /* Flash Effect */
+        #flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .flash-active {
+            animation: flashAnim 0.3s ease-out;
+        }
+
+        @keyframes flashAnim {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Heart Particles */
+        .heart {
+            position: absolute;
+            color: var(--accent);
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 2;
+            animation: heartFly 3s ease-out forwards;
+        }
+
+        @keyframes heartFly {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) scale(0) rotate(45deg); opacity: 0; }
+        }
+
+        .track-ltr {
+            animation: scrollLeftToRight 60s linear infinite;
+        }
+
+        .track-rtl {
+            animation: scrollRightToLeft 60s linear infinite;
+        }
+
+        /* Petal Styles */
+        .petal {
+            position: absolute;
+            background-color: #ff4757;
+            width: 15px;
+            height: 15px;
+            border-radius: 150% 0 150% 150%;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.6;
+        }
+
+        @keyframes scrollLeftToRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes scrollRightToLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes petalFall {
+            0% { 
+                top: -10vh; 
+                transform: translateX(0) rotate(0deg); 
+                opacity: 0.8;
+            }
+            100% { 
+                top: 110vh; 
+                transform: translateX(var(--drift)) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="flash"></div>
+    <div class="bokeh-container" id="bokeh-container"></div>
+
+    <!-- SCREEN 1: Intro / Teddy -->
+    <div id="intro-screen" class="screen active">
+        <div id="teddy-wrapper">
+            <div id="speech" class="speech-bubble">
+                Surprise k liye ready? <br>
+                <button class="ok-btn" onclick="startBalloonPhase()">OK</button>
+            </div>
+            <img src="img/teddy.png" class="teddy-icon" alt="Teddy">
+        </div>
+    </div>
+
+    <!-- SCREEN 2: Balloon Pop -->
+    <div id="balloon-screen" class="screen hidden">
+        <h2 id="balloon-title">Balloon pop kijiye saloni ji </h2>
+        <!-- Balloons will be dynamically appended here -->
+        
+        <div id="skip-wrapper" class="skip-wrapper hidden">
+            <button class="action-btn" onclick="startCarouselPhase()">apko skip karna h kya?</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: Photo Display -->
+    <div id="photo-screen" class="screen hidden" style="background: rgba(0,0,0,0.8);">
+        <div id="photo-card" class="photo-card">
+            <div class="media-box" id="media-box">
+                <!-- Image or Video injected here -->
+            </div>
+            <p class="memory-text" id="memory-txt">Memory text here</p>
+        </div>
+        <button class="next-btn" id="next-balloon-btn" onclick="nextBalloon()">yaha click karna h 
+            
+        </button>
+    </div>
+
+    <!-- SCREEN 4: Moving Carousels -->
+    <div id="carousel-screen" class="screen hidden">
+        <div class="marquee-container" id="row1">
+            <div class="marquee-track track-ltr" id="track1">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+        <div class="marquee-container" id="row2">
+            <div class="marquee-track track-rtl" id="track2">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA SETUP ---
+        // Edit this array to add your actual media files and memories!
+        // Place files in public/img or src/img depending on your build setup. 
+        // Example: src="img/photo1.jpg"
+        const memories = [
+            { type: 'image', src: 'img/WhatsApp%20Image%202026-03-03%20at%2010.27.27%20AM.jpeg', text: 'apke haath bechare boht dard hota tha na mere wajh se kitni baar lag gya h inpe ' },
+            { type: 'image', src: 'img/after%20a%20long%20tim%20e.jpeg', text: ' shakal ajeeb ayi h meri par tu kitni pyari lag rhi h isme ' },
+            { type: 'image', src: 'img/apka%20clatcher.jpeg', text: 'aap nhi toh apka clutcher hi sath h vaise clutcher aur m sath m ache lag rhe h ' },
+            { type: 'image', src: 'img/apke%20baal%20.jpeg', text: 'Maine maine banaya h dekh kitna acha banaya tha ' },
+            { type: 'video', src: 'img/apke%20clipbaal.mp4', text: 'aise hi boht sundar lag rhi h tu... Hayee nazar naa lage ' },
+            { type: 'image', src: 'img/beautiful%20.jpeg', text: 'Dekha jaye toh saloni isme bhi natural beauty toh dikh rhi h teri nazara kitna acha h na ... par tu tab mujhse ab jaise baat nhi karti thi varna sath m enjoy karte ' },
+            { type: 'image', src: 'img/beautifull%20pro%20max.jpeg', text: 'Haa yaha p toh hum baat karne lage the , Glow up bhi hogya aur sundar sundar sundar hone lagi ' },
+            { type: 'image', src: 'img/black%20back%20saree.jpeg', text: 'Black sareee m oye hoye hoye sabne dekh liya tha 12th m mera number hi last aaya ' },
+            { type: 'video', src: 'img/computer%20class.mp4', text: 'ispe m kya kahu 😂😂🤣 memories h ' },
+            { type: 'image', src: 'img/gemini%20art.jpeg', text: 'ye ye dono kon h ache lag rhe h sath m ' },
+            { type: 'image', src: 'img/haircut.jpeg', text: 'Nice haircut' },
+            { type: 'image', src: 'img/hands%20in%20train%20.jpeg', text: 'Aise hath nhi pakdte saloni koi dekh lega 😏' },
+            { type: 'image', src: 'img/hands%20while%20walking.jpeg', text: 'aise hath pakd k chal na chahiye isse body m positivity aati h tere gaon jane k ek din pehle liya tha maine ' },
+            { type: 'image', src: 'img/happy%2018th%20birthday.jpeg', text: 'Happy birthday to youuu 18th completed saloni... surprise kasia laga' },
+            { type: 'image', src: 'img/iskcon%20spider%20img.jpeg', text: 'ye ye dono kon h ye bhi ache lag rhe h sath m ' },
+            { type: 'video', src: 'img/masoom%20.mp4', text: 'Masoom si surat h teri chehre p halki si smile tujhe acha bhale naa lage ye par par ye rahega in my mobile' },
+            { type: 'image', src: 'img/officialy%20first%20pic.jpeg', text: 'Dekha jaye to ye humara pehla photot tha sath m... pose acha h waise' },
+            { type: 'video', src: 'img/phelix%20.mp4', text: 'phelix vibesss' },
+            { type: 'video', src: 'img/pizza%20adayein.mp4', text: 'Vlogger saloni , ' },
+            { type: 'video', src: 'img/pizza%20day.mp4', text: 'SHH sirf video dekho ' },
+            { type: 'image', src: 'img/saree%20in%20traditional%20.jpeg', text: 'First time saree m dekha tha maine tujjhe kitni sundarrrrrr lag rhi h tu , aur tujhe lagta h mujhe tareef karna nhi aata ' },
+            { type: 'image', src: 'img/traditional%20day%20.jpeg', text: 'humari photo aur upr se mam ka dekhna 😂' },
+            { type: 'image', src: 'img/uff%20pro%20max.jpeg', text: 'aye haye haye nazar naa lage ' },
+            { type: 'image', src: 'img/uff.jpeg', text: 'Dekha jabse tumko bss dekha tumko yaara , tumse na koi acha h na tumse koi pyara ' },
+            { type: 'image', src: 'img/waoh.jpeg', text: 'Aise poses 😂 ' }
+        ];
+
+        let availableMemories = [...memories];
+        let poppedCount = 0;
+        let currentBalloon = null;
+        let petalInterval = null;
+
+        // --- PHASE 1: Intro Logic ---
+        window.onload = () => {
+            createMovingBokeh();
+            // Black screen for 1 second, then teddy sneaks up
+            setTimeout(() => {
+                const teddy = document.getElementById('teddy-wrapper');
+                teddy.classList.add('sneak');
+                
+                // Show speech bubble after teddy comes up
+                setTimeout(() => {
+                    document.getElementById('speech').classList.add('show');
+                }, 800);
+            }, 1000);
+        };
+
+        function createMovingBokeh() {
+            const container = document.getElementById('bokeh-container');
+            for(let i=0; i<10; i++) {
+                const b = document.createElement('div');
+                b.classList.add('bokeh');
+                const size = Math.random() * 200 + 100;
+                b.style.width = size + 'px';
+                b.style.height = size + 'px';
+                b.style.left = Math.random() * 100 + '%';
+                b.style.top = Math.random() * 100 + '%';
+                b.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(b);
+            }
+        }
+
+        // --- PHASE 2: Balloons ---
+        function startBalloonPhase() {
+            // Teddy sneaks back down
+            document.getElementById('teddy-wrapper').classList.remove('sneak');
+            document.getElementById('speech').classList.remove('show');
+
+            setTimeout(() => {
+                document.getElementById('intro-screen').classList.remove('active');
+                document.getElementById('intro-screen').classList.add('hidden');
+                
+                const bs = document.getElementById('balloon-screen');
+                bs.classList.remove('hidden');
+                bs.classList.add('active');
+
+                // Start Petals
+                startPetals();
+
+                // Fade in Title
+                setTimeout(() => {
+                    document.getElementById('balloon-title').style.opacity = '1';
+                }, 500);
+
+                // Release first balloon
+                setTimeout(releaseBalloon, 1500);
+            }, 800);
+        }
+
+        function startPetals() {
+            if (petalInterval) return;
+            petalInterval = setInterval(createPetalEffect, 1000);
+        }
+
+        function stopPetals() {
+            if (petalInterval) {
+                clearInterval(petalInterval);
+                petalInterval = null;
+            }
+        }
+
+        function createPetalEffect() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            
+            const startX = Math.random() * window.innerWidth;
+            const drift = (Math.random() - 0.5) * 200;
+            const duration = Math.random() * 5 + 5;
+            
+            petal.style.left = startX + 'px';
+            petal.style.setProperty('--drift', drift + 'px');
+            petal.style.animation = `petalFall ${duration}s linear forwards`;
+            
+            document.body.appendChild(petal);
+            
+            setTimeout(() => {
+                petal.remove();
+            }, duration * 1000);
+        }
+
+        function releaseBalloon() {
+            if (availableMemories.length === 0) {
+                // All popped! Move to next phase automatically
+                startCarouselPhase();
+                return;
+            }
+
+            // Create balloon element
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.innerText = '🎈';
+            
+            // Randomize speed between 4s and 7s
+            const speed = Math.random() * 3 + 4;
+            balloon.style.animation = `floatUp ${speed}s linear forwards`;
+            
+            // Randomize X position slightly so they don't always pop up center
+            const randomX = (Math.random() - 0.5) * 50; // -25vw to 25vw
+            balloon.style.left = `calc(50% + ${randomX}vw)`;
+
+            // Click event to pop
+            balloon.onclick = (e) => {
+                const flash = document.getElementById('flash');
+                flash.classList.add('flash-active');
+                setTimeout(() => flash.classList.remove('flash-active'), 300);
+                
+                createHeartBurst(e.clientX, e.clientY);
+                balloon.remove();
+                showMemory();
+            };
+
+            document.getElementById('balloon-screen').appendChild(balloon);
+            currentBalloon = balloon;
+
+            // Optional: If balloon escapes screen without click, send another
+            setTimeout(() => {
+                if (document.body.contains(balloon)) {
+                    balloon.remove();
+                    releaseBalloon(); // Send another one
+                }
+            }, speed * 1000);
+        }
+
+        function createHeartBurst(x, y) {
+            for(let i=0; i<8; i++) {
+                const h = document.createElement('div');
+                h.classList.add('heart');
+                h.innerText = '❤️';
+                h.style.left = x + 'px';
+                h.style.top = y + 'px';
+                const drift = (Math.random() - 0.5) * 100;
+                h.style.setProperty('--drift', drift + 'px');
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 3000);
+            }
+        }
+
+        function showMemory() {
+            poppedCount++;
+            
+            // Determine if we should show skip button
+            if (poppedCount >= 3) {
+                document.getElementById('skip-wrapper').classList.remove('hidden');
+            }
+
+            // Pick random memory
+            const randomIndex = Math.floor(Math.random() * availableMemories.length);
+            const memory = availableMemories.splice(randomIndex, 1)[0];
+
+            // Setup Photo Card
+            const mediaBox = document.getElementById('media-box');
+            mediaBox.innerHTML = ''; // Clear prev
+
+            if (memory.type === 'image') {
+                const img = document.createElement('img');
+                img.src = memory.src;
+                mediaBox.appendChild(img);
+            } else if (memory.type === 'video') {
+                const vid = document.createElement('video');
+                vid.src = memory.src;
+                vid.autoplay = true;
+                vid.loop = true;
+                vid.muted = false; // Enabled sound after user interaction
+                vid.playsInline = true;
+                mediaBox.appendChild(vid);
+            }
+
+            document.getElementById('memory-txt').innerText = memory.text;
+
+            // Switch screens
+            document.getElementById('balloon-screen').classList.remove('active');
+            document.getElementById('balloon-screen').classList.add('hidden');
+            
+            const ps = document.getElementById('photo-screen');
+            ps.classList.remove('hidden');
+            ps.classList.add('active');
+
+            // Animate card in
+            setTimeout(() => {
+                document.getElementById('photo-card').classList.add('show');
+            }, 100);
+        }
+
+        function nextBalloon() {
+            // Hide Photo Screen
+            document.getElementById('photo-card').classList.remove('show');
+            
+            setTimeout(() => {
+                document.getElementById('photo-screen').classList.remove('active');
+                document.getElementById('photo-screen').classList.add('hidden');
+                
+                const bs = document.getElementById('balloon-screen');
+                bs.classList.remove('hidden');
+                bs.classList.add('active');
+                
+                // Release next balloon
+                releaseBalloon();
+            }, 500);
+        }
+
+        // --- PHASE 3: Carousel ---
+        function startCarouselPhase() {
+            // Stop Petals for the carousel section
+            stopPetals();
+
+            // Hide everything else
+            document.getElementById('balloon-screen').classList.remove('active');
+            document.getElementById('balloon-screen').classList.add('hidden');
+            document.getElementById('photo-screen').classList.remove('active');
+            document.getElementById('photo-screen').classList.add('hidden');
+
+            const cs = document.getElementById('carousel-screen');
+            cs.classList.remove('hidden');
+            cs.classList.add('active');
+
+            buildCarousels();
+        }
+
+        function buildCarousels() {
+            const track1 = document.getElementById('track1');
+            const track2 = document.getElementById('track2');
+            
+            track1.innerHTML = '';
+            track2.innerHTML = '';
+
+            // We need enough items to make a continuous marquee.
+            // Let's duplicate the original 'memories' array a few times.
+            const repeatedMemories = [...memories, ...memories, ...memories, ...memories];
+            
+            // Split into two halves for row 1 and row 2
+            const half = Math.ceil(repeatedMemories.length / 2);
+            const row1Data = repeatedMemories.slice(0, half);
+            const row2Data = repeatedMemories.slice(half);
+
+            // Populate Track 1
+            row1Data.forEach(m => {
+                track1.appendChild(createMediaElement(m));
+            });
+
+            // Populate Track 2
+            row2Data.forEach(m => {
+                track2.appendChild(createMediaElement(m));
+            });
+        }
+
+        function createMediaElement(memory) {
+            if (memory.type === 'video') {
+                const vid = document.createElement('video');
+                vid.src = memory.src;
+                vid.autoplay = true;
+                vid.loop = true;
+                vid.muted = true;
+                vid.playsInline = true;
+                return vid;
+            } else {
+                const img = document.createElement('img');
+                img.src = memory.src;
+                return img;
+            }
+        }
+    </script>
+</body>
+</html>
