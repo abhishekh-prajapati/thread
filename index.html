@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>For you</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -86,7 +86,7 @@
         /* --- Intro Screen --- */
         #teddy-wrapper {
             position: absolute;
-            bottom: -300px; /* Hidden below */
+            bottom: -300px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -486,15 +486,12 @@
 
         let availableMemories = [...memories];
         let poppedCount = 0;
-        let currentBalloon = null;
         let petalInterval = null;
 
-        // --- PHASE 1: Intro Logic ---
         window.onload = () => {
             createMovingBokeh();
             setTimeout(() => {
-                const teddy = document.getElementById('teddy-wrapper');
-                teddy.classList.add('sneak');
+                document.getElementById('teddy-wrapper').classList.add('sneak');
                 setTimeout(() => {
                     document.getElementById('speech').classList.add('show');
                 }, 800);
@@ -520,72 +517,52 @@
             document.getElementById('teddy-wrapper').classList.remove('sneak');
             document.getElementById('speech').classList.remove('show');
             setTimeout(() => {
-                document.getElementById('intro-screen').classList.remove('active');
-                document.getElementById('intro-screen').classList.add('hidden');
+                document.getElementById('intro-screen').classList.replace('active', 'hidden');
                 const bs = document.getElementById('balloon-screen');
-                bs.classList.remove('hidden');
-                bs.classList.add('active');
+                bs.classList.replace('hidden', 'active');
                 startPetals();
-                setTimeout(() => {
-                    document.getElementById('balloon-title').style.opacity = '1';
-                }, 500);
+                setTimeout(() => document.getElementById('balloon-title').style.opacity = '1', 500);
                 setTimeout(releaseBalloon, 1500);
             }, 800);
         }
 
         function startPetals() {
-            if (petalInterval) return;
-            petalInterval = setInterval(createPetalEffect, 1000);
+            if (!petalInterval) petalInterval = setInterval(createPetalEffect, 1000);
         }
 
         function stopPetals() {
-            if (petalInterval) {
-                clearInterval(petalInterval);
-                petalInterval = null;
-            }
+            clearInterval(petalInterval);
+            petalInterval = null;
         }
 
         function createPetalEffect() {
             const petal = document.createElement('div');
             petal.classList.add('petal');
-            const startX = Math.random() * window.innerWidth;
-            const drift = (Math.random() - 0.5) * 200;
             const duration = Math.random() * 5 + 5;
-            petal.style.left = startX + 'px';
-            petal.style.setProperty('--drift', drift + 'px');
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.setProperty('--drift', (Math.random() - 0.5) * 200 + 'px');
             petal.style.animation = `petalFall ${duration}s linear forwards`;
             document.body.appendChild(petal);
             setTimeout(() => petal.remove(), duration * 1000);
         }
 
         function releaseBalloon() {
-            if (availableMemories.length === 0) {
-                startCarouselPhase();
-                return;
-            }
+            if (availableMemories.length === 0) return startCarouselPhase();
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
             balloon.innerText = '🎈';
             const speed = Math.random() * 3 + 4;
             balloon.style.animation = `floatUp ${speed}s linear forwards`;
-            const randomX = (Math.random() - 0.5) * 50;
-            balloon.style.left = `calc(50% + ${randomX}vw)`;
+            balloon.style.left = (Math.random() * 60 + 20) + 'vw';
             balloon.onclick = (e) => {
-                const flash = document.getElementById('flash');
-                flash.classList.add('flash-active');
-                setTimeout(() => flash.classList.remove('flash-active'), 300);
+                document.getElementById('flash').classList.add('flash-active');
+                setTimeout(() => document.getElementById('flash').classList.remove('flash-active'), 300);
                 createHeartBurst(e.clientX, e.clientY);
                 balloon.remove();
                 showMemory();
             };
             document.getElementById('balloon-screen').appendChild(balloon);
-            currentBalloon = balloon;
-            setTimeout(() => {
-                if (document.body.contains(balloon)) {
-                    balloon.remove();
-                    releaseBalloon();
-                }
-            }, speed * 1000);
+            setTimeout(() => { if (document.body.contains(balloon)) { balloon.remove(); releaseBalloon(); } }, speed * 1000);
         }
 
         function createHeartBurst(x, y) {
@@ -595,8 +572,7 @@
                 h.innerText = '❤️';
                 h.style.left = x + 'px';
                 h.style.top = y + 'px';
-                const drift = (Math.random() - 0.5) * 100;
-                h.style.setProperty('--drift', drift + 'px');
+                h.style.setProperty('--drift', (Math.random() - 0.5) * 100 + 'px');
                 document.body.appendChild(h);
                 setTimeout(() => h.remove(), 3000);
             }
@@ -604,88 +580,70 @@
 
         function showMemory() {
             poppedCount++;
-            if (poppedCount >= 3) {
-                document.getElementById('skip-wrapper').classList.remove('hidden');
-            }
-            const randomIndex = Math.floor(Math.random() * availableMemories.length);
-            const memory = availableMemories.splice(randomIndex, 1)[0];
+            if (poppedCount >= 3) document.getElementById('skip-wrapper').classList.remove('hidden');
+            const memory = availableMemories.splice(Math.floor(Math.random() * availableMemories.length), 1)[0];
             const mediaBox = document.getElementById('media-box');
             mediaBox.innerHTML = '';
             if (memory.type === 'image') {
-                const img = document.createElement('img');
-                img.src = memory.src;
+                const img = new Image();
+                img.src = encodeURI(memory.src);
                 mediaBox.appendChild(img);
-            } else if (memory.type === 'video') {
+            } else {
                 const vid = document.createElement('video');
-                vid.src = memory.src;
+                vid.src = encodeURI(memory.src);
                 vid.autoplay = true;
                 vid.loop = true;
                 vid.muted = false;
                 vid.playsInline = true;
+                vid.setAttribute('webkit-playsinline', 'true');
                 mediaBox.appendChild(vid);
             }
             document.getElementById('memory-txt').innerText = memory.text;
-            document.getElementById('balloon-screen').classList.remove('active');
-            document.getElementById('balloon-screen').classList.add('hidden');
-            const ps = document.getElementById('photo-screen');
-            ps.classList.remove('hidden');
-            ps.classList.add('active');
-            setTimeout(() => {
-                document.getElementById('photo-card').classList.add('show');
-            }, 100);
+            document.getElementById('balloon-screen').classList.replace('active', 'hidden');
+            document.getElementById('photo-screen').classList.replace('hidden', 'active');
+            setTimeout(() => document.getElementById('photo-card').classList.add('show'), 100);
         }
 
         function nextBalloon() {
             document.getElementById('photo-card').classList.remove('show');
             setTimeout(() => {
-                document.getElementById('photo-screen').classList.remove('active');
-                document.getElementById('photo-screen').classList.add('hidden');
-                const bs = document.getElementById('balloon-screen');
-                bs.classList.remove('hidden');
-                bs.classList.add('active');
+                document.getElementById('photo-screen').classList.replace('active', 'hidden');
+                document.getElementById('balloon-screen').classList.replace('hidden', 'active');
                 releaseBalloon();
             }, 500);
         }
 
         function startCarouselPhase() {
             stopPetals();
-            document.getElementById('balloon-screen').classList.remove('active');
-            document.getElementById('balloon-screen').classList.add('hidden');
-            document.getElementById('photo-screen').classList.remove('active');
-            document.getElementById('photo-screen').classList.add('hidden');
-            const cs = document.getElementById('carousel-screen');
-            cs.classList.remove('hidden');
-            cs.classList.add('active');
+            ['balloon-screen', 'photo-screen'].forEach(id => document.getElementById(id).classList.replace('active', 'hidden'));
+            document.getElementById('carousel-screen').classList.replace('hidden', 'active');
             buildCarousels();
         }
 
         function buildCarousels() {
             const track1 = document.getElementById('track1');
             const track2 = document.getElementById('track2');
-            track1.innerHTML = '';
-            track2.innerHTML = '';
-            const repeatedMemories = [...memories, ...memories, ...memories, ...memories];
-            const half = Math.ceil(repeatedMemories.length / 2);
-            const row1Data = repeatedMemories.slice(0, half);
-            const row2Data = repeatedMemories.slice(half);
-            row1Data.forEach(m => track1.appendChild(createMediaElement(m)));
-            row2Data.forEach(m => track2.appendChild(createMediaElement(m)));
+            track1.innerHTML = track2.innerHTML = '';
+            const repeated = [...memories, ...memories, ...memories, ...memories];
+            const half = Math.ceil(repeated.length / 2);
+            repeated.slice(0, half).forEach(m => track1.appendChild(createMediaElement(m)));
+            repeated.slice(half).forEach(m => track2.appendChild(createMediaElement(m)));
         }
 
         function createMediaElement(memory) {
             if (memory.type === 'video') {
                 const vid = document.createElement('video');
-                vid.src = memory.src;
+                vid.src = encodeURI(memory.src);
                 vid.autoplay = true;
                 vid.loop = true;
                 vid.muted = true;
                 vid.playsInline = true;
+                vid.setAttribute('webkit-playsinline', 'true');
                 return vid;
-            } else {
-                const img = document.createElement('img');
-                img.src = memory.src;
-                return img;
             }
+            const img = new Image();
+            img.src = encodeURI(memory.src);
+            return img;
         }
     </script>
 </body>
