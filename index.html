@@ -301,8 +301,28 @@
         #carousel-screen {
             background: rgba(0, 0, 0, 0.95);
             justify-content: center;
-            gap: 10px;
+            gap: 5px;
             padding: 20px 0;
+        }
+
+        .friendship-msg {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 10px 0;
+            z-index: 100;
+            background: linear-gradient(45deg, #ff6b81, #ff4757, #ff6b81);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 107, 129, 0.3);
+            animation: gradientMove 3s infinite alternate;
+        }
+
+        @keyframes gradientMove {
+            0% { filter: hue-rotate(0deg); transform: scale(1); }
+            100% { filter: hue-rotate(10deg); transform: scale(1.05); }
         }
 
         .marquee-container {
@@ -415,6 +435,9 @@
         <div class="marquee-container" id="row1">
             <div class="marquee-track track-ltr" id="track1"></div>
         </div>
+        
+        <h2 class="friendship-msg">10 years of friendship and still counting...</h2>
+
         <div class="marquee-container" id="row2">
             <div class="marquee-track track-rtl" id="track2"></div>
         </div>
