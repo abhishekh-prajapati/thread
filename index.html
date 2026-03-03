@@ -25,6 +25,7 @@
             background-color: var(--dark);
             color: var(--text-light);
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             overflow: hidden;
             position: relative;
             display: flex;
@@ -32,6 +33,10 @@
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at center, #1a0a10 0%, #000000 100%);
+        }
+
+        html {
+            height: -webkit-fill-available;
         }
 
         /* Bokeh Background Effect */
@@ -64,12 +69,14 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: opacity 0.5s ease;
             z-index: 10;
+            overflow: hidden;
         }
 
         .hidden {
@@ -94,6 +101,7 @@
             align-items: center;
             transition: bottom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 20;
+            width: 100%;
         }
 
         #teddy-wrapper.sneak {
@@ -101,26 +109,27 @@
         }
 
         .teddy-icon {
-            width: 200px;
+            width: 180px;
             height: auto;
-            max-width: 80vw;
+            max-width: 70vw;
             filter: drop-shadow(0 10px 15px rgba(255, 71, 87, 0.3));
         }
 
         .speech-bubble {
             background: white;
             color: var(--dark);
-            padding: 15px 20px;
-            border-radius: 20px;
+            padding: 12px 18px;
+            border-radius: 18px;
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
             position: relative;
             text-align: center;
             box-shadow: 0 5px 15px rgba(255,255,255,0.2);
             opacity: 0;
             transform: scale(0.5);
             transition: all 0.5s ease;
+            max-width: 80%;
         }
 
         .speech-bubble.show {
@@ -143,11 +152,11 @@
             background: var(--accent);
             color: white;
             border: none;
-            padding: 10px 35px;
-            border-radius: 25px;
+            padding: 8px 30px;
+            border-radius: 20px;
             font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
-            margin-top: 10px;
+            font-size: 1rem;
+            margin-top: 8px;
             cursor: pointer;
             box-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
             font-weight: 600;
@@ -164,12 +173,12 @@
         /* --- Balloon Screen --- */
         #balloon-title {
             position: absolute;
-            top: 20%;
+            top: 15%;
             font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             text-align: center;
             color: var(--primary);
-            text-shadow: 0 0 10px rgba(255, 107, 129, 0.5);
+            text-shadow: 0 0 8px rgba(255, 107, 129, 0.5);
             opacity: 0;
             transition: opacity 1s ease;
             width: 100%;
@@ -177,7 +186,7 @@
         }
 
         .balloon {
-            font-size: 6rem;
+            font-size: 5rem;
             position: absolute;
             bottom: -150px;
             left: 50%;
@@ -185,7 +194,7 @@
             cursor: pointer;
             filter: drop-shadow(0 5px 15px rgba(255,255,255,0.2));
             z-index: 30;
-            transition: transform 0.1s;
+            user-select: none;
         }
         
         .balloon:active {
@@ -200,7 +209,7 @@
 
         .skip-wrapper {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
             width: 100%;
             text-align: center;
             z-index: 50;
@@ -214,75 +223,76 @@
             padding: 10px 20px;
             border-radius: 25px;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: background 0.3s;
-        }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
         }
 
         /* --- Photo Memory Screen --- */
         .photo-card {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 12px;
-            padding-bottom: 25px;
+            padding-bottom: 20px;
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             transform: scale(0.8);
             opacity: 0;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 90%;
+            width: 85%;
+            max-width: 400px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: -50px;
         }
 
         .photo-card.show {
-            transform: scale(1) rotate(-2deg);
+            transform: scale(1) rotate(-1deg);
             opacity: 1;
         }
 
         .media-box {
             width: 100%;
-            max-height: 50vh;
-            border: 2px solid #eee;
+            height: auto;
+            max-height: 45vh;
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f8f8f8;
+            background: rgba(0,0,0,0.2);
         }
 
         .media-box img, .media-box video {
-            max-width: 100%;
-            max-height: 50vh;
-            object-fit: contain;
+            width: 100%;
+            height: auto;
+            max-height: 45vh;
+            object-fit: cover;
         }
 
         .memory-text {
             color: var(--text-light);
             font-family: 'Outfit', sans-serif;
-            font-size: 1.6rem;
-            margin-top: 18px;
-            padding: 0 10px;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            padding: 0 5px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.4;
         }
 
         .next-btn {
-            margin-top: 30px;
+            margin-top: 25px;
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 12px 35px;
             border-radius: 30px;
             font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(255, 107, 129, 0.4);
         }
@@ -290,7 +300,8 @@
         /* --- Final Carousel Screen --- */
         #carousel-screen {
             background: rgba(0, 0, 0, 0.95);
-            justify-content: space-evenly;
+            justify-content: center;
+            gap: 10px;
             padding: 20px 0;
         }
 
@@ -300,48 +311,34 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
-            height: 40vh;
+            height: 38vh;
         }
 
         .marquee-track {
             display: flex;
-            gap: 15px;
-            padding: 0 15px;
+            gap: 10px;
+            padding: 0 10px;
             width: max-content;
         }
 
         .marquee-track img, .marquee-track video {
-            height: 35vh;
+            height: 33vh;
             width: auto;
-            max-width: 80vw;
-            border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             object-fit: cover;
-            box-shadow: 0 5px 15px rgba(255,255,255,0.05);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
         }
 
         /* Flash Effect */
         #flash {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 100;
-            pointer-events: none;
-            opacity: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 100;
+            pointer-events: none; opacity: 0;
         }
 
-        .flash-active {
-            animation: flashAnim 0.3s ease-out;
-        }
-
-        @keyframes flashAnim {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
+        .flash-active { animation: flashAnim 0.3s ease-out; }
+        @keyframes flashAnim { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
 
         /* Heart Particles */
         .heart {
@@ -358,47 +355,24 @@
             100% { transform: translateY(-100px) scale(0) rotate(45deg); opacity: 0; }
         }
 
-        .track-ltr {
-            animation: scrollLeftToRight 60s linear infinite;
-        }
+        .track-ltr { animation: scrollLeftToRight 50s linear infinite; }
+        .track-rtl { animation: scrollRightToLeft 50s linear infinite; }
 
-        .track-rtl {
-            animation: scrollRightToLeft 60s linear infinite;
-        }
+        @keyframes scrollLeftToRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        @keyframes scrollRightToLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* Petal Styles */
         .petal {
             position: absolute;
             background-color: #ff4757;
-            width: 15px;
-            height: 15px;
+            width: 12px; height: 12px;
             border-radius: 150% 0 150% 150%;
-            pointer-events: none;
-            z-index: 5;
-            opacity: 0.6;
-        }
-
-        @keyframes scrollLeftToRight {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-        }
-
-        @keyframes scrollRightToLeft {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            pointer-events: none; z-index: 5; opacity: 0.6;
         }
 
         @keyframes petalFall {
-            0% { 
-                top: -10vh; 
-                transform: translateX(0) rotate(0deg); 
-                opacity: 0.8;
-            }
-            100% { 
-                top: 110vh; 
-                transform: translateX(var(--drift)) rotate(360deg); 
-                opacity: 0;
-            }
+            0% { top: -10vh; transform: translateX(0) rotate(0deg); opacity: 0.8; }
+            100% { top: 110vh; transform: translateX(var(--drift)) rotate(360deg); opacity: 0; }
         }
 
     </style>
@@ -422,40 +396,31 @@
     <!-- SCREEN 2: Balloon Pop -->
     <div id="balloon-screen" class="screen hidden">
         <h2 id="balloon-title">Balloon pop kijiye saloni ji </h2>
-        <!-- Balloons will be dynamically appended here -->
-        
         <div id="skip-wrapper" class="skip-wrapper hidden">
             <button class="action-btn" onclick="startCarouselPhase()">apko skip karna h kya?</button>
         </div>
     </div>
 
     <!-- SCREEN 3: Photo Display -->
-    <div id="photo-screen" class="screen hidden" style="background: rgba(0,0,0,0.8);">
+    <div id="photo-screen" class="screen hidden" style="background: rgba(0,0,0,0.85);">
         <div id="photo-card" class="photo-card">
-            <div class="media-box" id="media-box">
-                <!-- Image or Video injected here -->
-            </div>
-            <p class="memory-text" id="memory-txt">Memory text here</p>
+            <div class="media-box" id="media-box"></div>
+            <p class="memory-text" id="memory-txt"></p>
         </div>
-        <button class="next-btn" id="next-balloon-btn" onclick="nextBalloon()">yaha click karna h</button>
+        <button class="next-btn" id="next-balloon-btn" onclick="nextBalloon()">Agla vala dekhte h</button>
     </div>
 
     <!-- SCREEN 4: Moving Carousels -->
     <div id="carousel-screen" class="screen hidden">
         <div class="marquee-container" id="row1">
-            <div class="marquee-track track-ltr" id="track1">
-                <!-- Populated via JS -->
-            </div>
+            <div class="marquee-track track-ltr" id="track1"></div>
         </div>
         <div class="marquee-container" id="row2">
-            <div class="marquee-track track-rtl" id="track2">
-                <!-- Populated via JS -->
-            </div>
+            <div class="marquee-track track-rtl" id="track2"></div>
         </div>
     </div>
 
     <script>
-        // --- DATA SETUP ---
         const memories = [
             { type: 'image', src: 'img/WhatsApp Image 2026-03-03 at 10.27.27 AM.jpeg', text: 'apke haath bechare boht dard hota tha na mere wajh se kitni baar lag gya h inpe ' },
             { type: 'image', src: 'img/after a long tim e.jpeg', text: ' shakal ajeeb ayi h meri par tu kitni pyari lag rhi h isme ' },
@@ -492,22 +457,18 @@
             createMovingBokeh();
             setTimeout(() => {
                 document.getElementById('teddy-wrapper').classList.add('sneak');
-                setTimeout(() => {
-                    document.getElementById('speech').classList.add('show');
-                }, 800);
+                setTimeout(() => document.getElementById('speech').classList.add('show'), 800);
             }, 1000);
         };
 
         function createMovingBokeh() {
             const container = document.getElementById('bokeh-container');
-            for(let i=0; i<10; i++) {
+            for(let i=0; i<8; i++) {
                 const b = document.createElement('div');
                 b.classList.add('bokeh');
-                const size = Math.random() * 200 + 100;
-                b.style.width = size + 'px';
-                b.style.height = size + 'px';
-                b.style.left = Math.random() * 100 + '%';
-                b.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 150 + 100;
+                b.style.width = size + 'px'; b.style.height = size + 'px';
+                b.style.left = Math.random() * 100 + '%'; b.style.top = Math.random() * 100 + '%';
                 b.style.animationDelay = Math.random() * 5 + 's';
                 container.appendChild(b);
             }
@@ -518,29 +479,22 @@
             document.getElementById('speech').classList.remove('show');
             setTimeout(() => {
                 document.getElementById('intro-screen').classList.replace('active', 'hidden');
-                const bs = document.getElementById('balloon-screen');
-                bs.classList.replace('hidden', 'active');
+                document.getElementById('balloon-screen').classList.replace('hidden', 'active');
                 startPetals();
                 setTimeout(() => document.getElementById('balloon-title').style.opacity = '1', 500);
                 setTimeout(releaseBalloon, 1500);
             }, 800);
         }
 
-        function startPetals() {
-            if (!petalInterval) petalInterval = setInterval(createPetalEffect, 1000);
-        }
-
-        function stopPetals() {
-            clearInterval(petalInterval);
-            petalInterval = null;
-        }
+        function startPetals() { if (!petalInterval) petalInterval = setInterval(createPetalEffect, 1200); }
+        function stopPetals() { clearInterval(petalInterval); petalInterval = null; }
 
         function createPetalEffect() {
             const petal = document.createElement('div');
             petal.classList.add('petal');
-            const duration = Math.random() * 5 + 5;
+            const duration = Math.random() * 5 + 6;
             petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.setProperty('--drift', (Math.random() - 0.5) * 200 + 'px');
+            petal.style.setProperty('--drift', (Math.random() - 0.5) * 150 + 'px');
             petal.style.animation = `petalFall ${duration}s linear forwards`;
             document.body.appendChild(petal);
             setTimeout(() => petal.remove(), duration * 1000);
@@ -551,9 +505,9 @@
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
             balloon.innerText = '🎈';
-            const speed = Math.random() * 3 + 4;
+            const speed = Math.random() * 3 + 4.5;
             balloon.style.animation = `floatUp ${speed}s linear forwards`;
-            balloon.style.left = (Math.random() * 60 + 20) + 'vw';
+            balloon.style.left = (Math.random() * 70 + 15) + 'vw';
             balloon.onclick = (e) => {
                 document.getElementById('flash').classList.add('flash-active');
                 setTimeout(() => document.getElementById('flash').classList.remove('flash-active'), 300);
@@ -566,16 +520,24 @@
         }
 
         function createHeartBurst(x, y) {
-            for(let i=0; i<8; i++) {
+            for(let i=0; i<6; i++) {
                 const h = document.createElement('div');
-                h.classList.add('heart');
-                h.innerText = '❤️';
-                h.style.left = x + 'px';
-                h.style.top = y + 'px';
-                h.style.setProperty('--drift', (Math.random() - 0.5) * 100 + 'px');
+                h.classList.add('heart'); h.innerText = '❤️';
+                h.style.left = x + 'px'; h.style.top = y + 'px';
+                h.style.setProperty('--drift', (Math.random() - 0.5) * 80 + 'px');
                 document.body.appendChild(h);
-                setTimeout(() => h.remove(), 3000);
+                setTimeout(() => h.remove(), 2500);
             }
+        }
+
+        function stopAllScreenVideos() {
+            const currentMedia = document.getElementById('media-box').querySelectorAll('video');
+            currentMedia.forEach(v => {
+                v.pause();
+                v.src = "";
+                v.load();
+                v.remove();
+            });
         }
 
         function showMemory() {
@@ -584,6 +546,7 @@
             const memory = availableMemories.splice(Math.floor(Math.random() * availableMemories.length), 1)[0];
             const mediaBox = document.getElementById('media-box');
             mediaBox.innerHTML = '';
+            
             if (memory.type === 'image') {
                 const img = new Image();
                 img.src = encodeURI(memory.src);
@@ -591,13 +554,11 @@
             } else {
                 const vid = document.createElement('video');
                 vid.src = encodeURI(memory.src);
-                vid.autoplay = true;
-                vid.loop = true;
-                vid.muted = false;
-                vid.playsInline = true;
-                vid.setAttribute('webkit-playsinline', 'true');
+                vid.autoplay = true; vid.loop = true; vid.muted = false;
+                vid.playsInline = true; vid.setAttribute('webkit-playsinline', 'true');
                 mediaBox.appendChild(vid);
             }
+            
             document.getElementById('memory-txt').innerText = memory.text;
             document.getElementById('balloon-screen').classList.replace('active', 'hidden');
             document.getElementById('photo-screen').classList.replace('hidden', 'active');
@@ -605,6 +566,7 @@
         }
 
         function nextBalloon() {
+            stopAllScreenVideos();
             document.getElementById('photo-card').classList.remove('show');
             setTimeout(() => {
                 document.getElementById('photo-screen').classList.replace('active', 'hidden');
@@ -615,6 +577,7 @@
 
         function startCarouselPhase() {
             stopPetals();
+            stopAllScreenVideos();
             ['balloon-screen', 'photo-screen'].forEach(id => document.getElementById(id).classList.replace('active', 'hidden'));
             document.getElementById('carousel-screen').classList.replace('hidden', 'active');
             buildCarousels();
@@ -624,7 +587,7 @@
             const track1 = document.getElementById('track1');
             const track2 = document.getElementById('track2');
             track1.innerHTML = track2.innerHTML = '';
-            const repeated = [...memories, ...memories, ...memories, ...memories];
+            const repeated = [...memories, ...memories, ...memories];
             const half = Math.ceil(repeated.length / 2);
             repeated.slice(0, half).forEach(m => track1.appendChild(createMediaElement(m)));
             repeated.slice(half).forEach(m => track2.appendChild(createMediaElement(m)));
@@ -634,16 +597,11 @@
             if (memory.type === 'video') {
                 const vid = document.createElement('video');
                 vid.src = encodeURI(memory.src);
-                vid.autoplay = true;
-                vid.loop = true;
-                vid.muted = true;
-                vid.playsInline = true;
-                vid.setAttribute('webkit-playsinline', 'true');
+                vid.autoplay = true; vid.loop = true; vid.muted = true;
+                vid.playsInline = true; vid.setAttribute('webkit-playsinline', 'true');
                 return vid;
             }
-            const img = new Image();
-            img.src = encodeURI(memory.src);
-            return img;
+            const img = new Image(); img.src = encodeURI(memory.src); return img;
         }
     </script>
 </body>
